@@ -1,0 +1,10 @@
+<div class="mb-3">
+  <input
+		class="form-control"
+    [type]="type"
+    [placeholder]="placeholder"
+    [attr.aria-label]="label"
+    [value]="value"
+    (input)="handleInputChange($event)"
+  />
+</div>
