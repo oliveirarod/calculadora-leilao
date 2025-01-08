@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { NotaryFees } from '../shared/enums/notaryFees.enum';
+import { NotaryFees } from '@shared/enums/notary-fees.enum';
 
 @Injectable({
   providedIn: 'root',

@@ -15,7 +15,8 @@ export class AuctionService {
     const auctioneersFee = propertyValue * (auctioneersFeePercentage / 100);
     const notaryFees = this.feesService.getNotaryFeesValue(propertyValue);
 
-    return propertyValue + auctioneersFee + notaryFees;
-    
+    const totalValue = propertyValue + auctioneersFee + notaryFees;
+
+    return parseFloat(totalValue.toFixed(2));
   }
 }

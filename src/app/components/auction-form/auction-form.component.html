@@ -2,13 +2,15 @@
 	<app-auction-input 
 		formControlName="auctionPropertyValue"
 		[label]="'Valor do leilão'"
-		[placeholder]="'Informe o valor do imóvel'">
+		[placeholder]="'Informe o valor do imóvel'"
+		[mask]="maskTypesEnum.CURRENCY">
 	</app-auction-input>
 
 	<app-auction-input 
 		formControlName="auctioneersFeePercentage"
 		[label]="'Taxa do leiloeiro'"
-		[placeholder]="'Informe a porcentagem da taxa do leiloeiro'">
+		[placeholder]="'Informe a porcentagem da taxa do leiloeiro'"
+		[mask]="maskTypesEnum.PERCENTAGE">
 	</app-auction-input>
 </form>
 
