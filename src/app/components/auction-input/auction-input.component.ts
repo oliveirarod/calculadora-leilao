@@ -1,12 +1,10 @@
 import { Component, forwardRef, Input } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { MaskTypes } from '@shared/enums/mask-types.enum';
-import { NgxMaskDirective } from 'ngx-mask';
 
 @Component({
   selector: 'app-auction-input',
   standalone: true,
-  imports: [NgxMaskDirective],
+  imports: [],
   templateUrl: './auction-input.component.html',
   styleUrl: './auction-input.component.scss',
   providers: [
@@ -20,7 +18,6 @@ import { NgxMaskDirective } from 'ngx-mask';
 export class AuctionInputComponent implements ControlValueAccessor {
   @Input() label: string = '';
   @Input() placeholder: string = '';
-  @Input() mask: MaskTypes = MaskTypes.CURRENCY;
 
   value: string = '';
 
@@ -28,16 +25,9 @@ export class AuctionInputComponent implements ControlValueAccessor {
     const input = event.target as HTMLInputElement;
 
     this.value = input.value;
-    const formattedValue = this.formatCurrency(this.value);
 
-    this.onChange(formattedValue);
+    this.onChange(this.value);
     this.onTouched();
-  }
-
-  private formatCurrency(value: string): number {
-    const numericValue = parseFloat(value.replace(/\D/g, '').replace(',', '.'));
-
-    return isNaN(numericValue) ? 0 : Math.min(numericValue, 100);
   }
 
   // ControlValueAccessor methods
@@ -55,18 +45,5 @@ export class AuctionInputComponent implements ControlValueAccessor {
 
   registerOnTouched(fn: any): void {
     this.onTouched = fn;
-  }
-
-  // Mask methods
-  handleInputMask(): string {
-    return this.mask === MaskTypes.CURRENCY ? 'separator.2' : 'separator.0';
-  }
-
-  handleInputPrefix(): string {
-    return this.mask === MaskTypes.CURRENCY ? 'R$ ' : '';
-  }
-
-  handleInputSuffix(): string {
-    return this.mask === MaskTypes.PERCENTAGE ? '%' : '';
   }
 }

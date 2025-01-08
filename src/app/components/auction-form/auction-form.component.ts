@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 
 import { AuctionInputComponent } from '@components/auction-input/auction-input.component';
 import { AuctionService } from '@services/auction.service';
-import { MaskTypes } from '@shared/enums/mask-types.enum';
 
 @Component({
   selector: 'app-auction-form',
@@ -15,7 +14,6 @@ import { MaskTypes } from '@shared/enums/mask-types.enum';
 export class AuctionFormComponent implements OnInit {
   protected auctionForm!: FormGroup;
   protected totalValue!: number;
-  protected maskTypesEnum = MaskTypes;
 
   constructor(
     private form: FormBuilder,
@@ -32,8 +30,8 @@ export class AuctionFormComponent implements OnInit {
 
   createForm(): void {
     this.auctionForm = this.form.group({
-      auctionPropertyValue: [0],
-      auctioneersFeePercentage: [5, [Validators.min(0), Validators.max(100)]],
+      auctionPropertyValue: ['', Validators.required],
+      auctioneersFeePercentage: [5],
     });
   }
 
