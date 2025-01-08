@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
+
 import { FeesService } from './fees.service';
-import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -11,9 +11,19 @@ export class AuctionService {
     private feesService: FeesService
   ) { }
 
-  getTotalValue(propertyValue: number, auctioneersFeePercentage: number): number {
+  getNotaryFees(propertyValue: number): number {
+    return this.feesService.getNotaryFeesValue(propertyValue);
+  }
+
+  getAuctioneersFee(propertyValue: number, auctioneersFeePercentage: number): number {
     const auctioneersFee = propertyValue * (auctioneersFeePercentage / 100);
-    const notaryFees = this.feesService.getNotaryFeesValue(propertyValue);
+
+    return parseFloat(auctioneersFee.toFixed(2));
+  }
+
+  getTotalValue(propertyValue: number, auctioneersFeePercentage: number): number {
+    const auctioneersFee = this.getAuctioneersFee(propertyValue, auctioneersFeePercentage);
+    const notaryFees = this.getNotaryFees(propertyValue);
 
     const totalValue = propertyValue + auctioneersFee + notaryFees;
 

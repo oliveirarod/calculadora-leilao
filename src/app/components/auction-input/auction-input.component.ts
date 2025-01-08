@@ -19,22 +19,22 @@ export class AuctionInputComponent implements ControlValueAccessor {
   @Input() label: string = '';
   @Input() placeholder: string = '';
 
-  value: string = '';
+  value: any;
 
   handleInputChange(event: Event): void {
     const input = event.target as HTMLInputElement;
 
-    this.value = input.value;
+    this.value = Number(input.value);
 
     this.onChange(this.value);
     this.onTouched();
   }
 
   // ControlValueAccessor methods
-  onChange = (value: any) => {};
+  onChange = (value: number) => {};
   onTouched = () => {};
 
-  writeValue(value: any): void {
+  writeValue(value: number): void {
     console.log('value', value);
     this.value = value;
   }

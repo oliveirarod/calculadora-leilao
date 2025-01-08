@@ -1,0 +1,28 @@
+<h4>Total: {{ getTotalValue() | currency: 'BRL' }}	</h4>
+
+@if (getTotalValue() > 0) {
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Descrição</th>
+				<th>Valor</th>
+			</tr>
+		</thead>
+
+		<tbody>
+			@if (getAuctioneersFeePercentage() > 0) {
+				<tr>
+					<td>Taxa do leiloeiro</td>
+					<td>{{ getAuctioneersFeePercentage() | currency: 'BRL' }}</td>
+				</tr>
+			}
+
+			@if (getNotaryFees() > 0) {
+				<tr *ngIf="getNotaryFees() > 0">
+					<td>Taxas de cartório</td>
+					<td>{{ getNotaryFees() | currency: 'BRL' }}</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+}

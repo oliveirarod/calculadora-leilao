@@ -2,54 +2,36 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { AuctionInputComponent } from '@components/auction-input/auction-input.component';
-import { AuctionService } from '@services/auction.service';
+import { ResultDisplayComponent } from "../result-display/result-display.component";
+import { AuctionValues } from '@shared/interfaces/auction-values.interface';
 
 @Component({
   selector: 'app-auction-form',
   standalone: true,
-  imports: [ReactiveFormsModule, AuctionInputComponent],
+  imports: [ReactiveFormsModule, AuctionInputComponent, ResultDisplayComponent],
   templateUrl: './auction-form.component.html',
   styleUrl: './auction-form.component.scss',
 })
 export class AuctionFormComponent implements OnInit {
   protected auctionForm!: FormGroup;
-  protected totalValue!: number;
+  protected auctionFormValues!: AuctionValues;
 
   constructor(
-    private form: FormBuilder,
-    private auctionService: AuctionService
+    private form: FormBuilder
   ) {}
 
   ngOnInit(): void {
     this.createForm();
 
-    this.auctionForm.valueChanges.subscribe(() => {
-      this.totalValue = this.getTotalValue();
+    this.auctionForm.valueChanges.subscribe((values) => {
+      this.auctionFormValues = values as AuctionValues;
     });
   }
 
   createForm(): void {
     this.auctionForm = this.form.group({
-      auctionPropertyValue: ['', Validators.required],
+      auctionPropertyValue: [0, Validators.required],
       auctioneersFeePercentage: [5],
     });
-  }
-
-  getTotalValue(): number {
-    const propertyValue = Number(
-      this.auctionForm.get('auctionPropertyValue')?.value
-    );
-
-    const auctioneersFeePercentage = Number(
-      this.auctionForm.get('auctioneersFeePercentage')?.value
-    );
-
-    console.log("propertyValue: ", propertyValue);
-    console.log("auctioneersFeePercentage: ", auctioneersFeePercentage);
-
-    return this.auctionService.getTotalValue(
-      propertyValue,
-      auctioneersFeePercentage
-    );
   }
 }
