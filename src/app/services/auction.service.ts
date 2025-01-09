@@ -21,12 +21,12 @@ export class AuctionService {
     return parseFloat(auctioneersFee.toFixed(2));
   }
 
-  getTotalValue(propertyValue: number, auctioneersFeePercentage: number): number {
+  getTotalInvested(propertyValue: number, auctioneersFeePercentage: number): number {
     const auctioneersFee = this.getAuctioneersFee(propertyValue, auctioneersFeePercentage);
     const notaryFees = this.getNotaryFees(propertyValue);
 
-    const totalValue = propertyValue + auctioneersFee + notaryFees;
+    const potentialProfit = propertyValue + auctioneersFee + notaryFees;
 
-    return parseFloat(totalValue.toFixed(2));
+    return parseFloat(potentialProfit.toFixed(2)) || 0;
   }
 }

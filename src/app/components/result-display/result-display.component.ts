@@ -1,13 +1,8 @@
 import { CommonModule } from '@angular/common';
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  Output,
-} from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 
 import { AuctionService } from '@services/auction.service';
+import { AuctionDetail } from '@shared/interfaces/auction-detail.interface';
 import { AuctionValues } from '@shared/interfaces/auction-values.interface';
 
 @Component({
@@ -19,10 +14,22 @@ import { AuctionValues } from '@shared/interfaces/auction-values.interface';
 })
 export class ResultDisplayComponent implements OnChanges {
   @Input() auctionValues!: AuctionValues;
-
-  ngOnChanges(): void {}
+  auctionDetails: AuctionDetail[] = [];
 
   constructor(private auctionService: AuctionService) {}
+
+  ngOnChanges(): void {
+    this.updateFeeDetails();
+  }
+
+  updateFeeDetails(): void {
+    const details: AuctionDetail[] = [
+      { description: 'Taxa do leiloeiro', value: this.getAuctioneersFeePercentage() },
+      { description: 'Taxas de cartório', value: this.getNotaryFees() }
+    ];
+
+    this.auctionDetails = details.filter(detail => detail.value > 0);
+  }
 
   getAuctioneersFeePercentage(): number {
     return this.auctionService.getAuctioneersFee(
@@ -38,7 +45,7 @@ export class ResultDisplayComponent implements OnChanges {
   }
 
   getTotalValue(): number {
-    return this.auctionService.getTotalValue(
+    return this.auctionService.getTotalInvested(
       this.auctionValues?.auctionPropertyValue,
       this.auctionValues?.auctioneersFeePercentage
     );
