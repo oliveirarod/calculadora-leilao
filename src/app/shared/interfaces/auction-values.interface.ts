@@ -1,6 +1,6 @@
 export interface AuctionValues {
   appraisalValue: number;
-  auctionPropertyValue: number;
+  auctionPurchaseValue: number;
   auctioneersFeePercentage: number;
   totalInvested: number;
   potentialProfit: number;

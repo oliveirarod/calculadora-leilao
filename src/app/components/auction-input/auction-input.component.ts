@@ -21,7 +21,7 @@ export class AuctionInputComponent implements ControlValueAccessor {
 
   value: any;
 
-  handleInputChange(event: Event): void {
+  protected handleInputChange(event: Event): void {
     const input = event.target as HTMLInputElement;
 
     this.value = Number(input.value);

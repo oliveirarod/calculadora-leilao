@@ -11,22 +11,52 @@ export class AuctionService {
     private feesService: FeesService
   ) { }
 
-  getNotaryFees(propertyValue: number): number {
-    return this.feesService.getNotaryFeesValue(propertyValue);
+  getNotaryFees(auctionPurchaseValue: number): number {
+    return this.feesService.getNotaryFeesValue(auctionPurchaseValue);
   }
 
-  getAuctioneersFee(propertyValue: number, auctioneersFeePercentage: number): number {
-    const auctioneersFee = propertyValue * (auctioneersFeePercentage / 100);
+  getAuctioneersFee(auctionPurchaseValue: number, auctioneersFeePercentage: number): number {
+    const auctioneersFee = auctionPurchaseValue * (auctioneersFeePercentage / 100);
 
     return parseFloat(auctioneersFee.toFixed(2));
   }
 
-  getTotalInvested(propertyValue: number, auctioneersFeePercentage: number): number {
-    const auctioneersFee = this.getAuctioneersFee(propertyValue, auctioneersFeePercentage);
-    const notaryFees = this.getNotaryFees(propertyValue);
+  getTotalInvested(auctionPurchaseValue: number, auctioneersFeePercentage: number): number {
+    const auctioneersFee = this.getAuctioneersFee(auctionPurchaseValue, auctioneersFeePercentage);
+    const notaryFees = this.getNotaryFees(auctionPurchaseValue);
 
-    const potentialProfit = propertyValue + auctioneersFee + notaryFees;
+    const potentialProfit = auctionPurchaseValue + auctioneersFee + notaryFees;
 
     return parseFloat(potentialProfit.toFixed(2)) || 0;
+  }
+
+  getPotentialGrossProfit(
+    appraisalValue: number, 
+    auctionPurchaseValue: number, 
+    auctioneersFeePercentage: number
+  ): number {
+
+    const totalInvested = this.getTotalInvested(
+      auctionPurchaseValue,
+      auctioneersFeePercentage
+    );
+    const potentialProfit = appraisalValue - totalInvested;
+
+    return parseFloat(potentialProfit.toFixed(2)) || 0;
+  }
+
+  getIncomeTax(
+    appraisalValue: number, 
+    auctionPurchaseValue: number, 
+    auctioneersFeePercentage: number
+  ): number {
+
+    const potentialProfit = this.getPotentialGrossProfit(
+      appraisalValue, 
+      auctionPurchaseValue, 
+      auctioneersFeePercentage
+    );
+
+    return potentialProfit * 0.15;
   }
 }

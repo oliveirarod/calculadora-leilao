@@ -22,32 +22,66 @@ export class ResultDisplayComponent implements OnChanges {
     this.updateFeeDetails();
   }
 
-  updateFeeDetails(): void {
+  private updateFeeDetails(): void {
     const details: AuctionDetail[] = [
-      { description: 'Taxa do leiloeiro', value: this.getAuctioneersFeePercentage() },
-      { description: 'Taxas de cartório', value: this.getNotaryFees() }
+      {
+        description: 'Taxa do leiloeiro',
+        value: this.getAuctioneersFeePercentage(),
+      },
+      { description: 'Taxas de cartório', value: this.getNotaryFees() },
+      { description: 'Imposto de Renda', value: this.getIncomeTax() },
+      {
+        description: 'Ganho potencial (bruto)',
+        value: this.getPotentialGrossProfit(),
+        isProfit: true,
+      },
+      {
+        description: 'Ganho potencial (liquido)',
+        value: this.getPotentialNetProfit(),
+        isProfit: true,
+      },
     ];
 
-    this.auctionDetails = details.filter(detail => detail.value > 0);
+    this.auctionDetails = details.filter((detail) => detail.value > 0);
   }
 
-  getAuctioneersFeePercentage(): number {
+  private getAuctioneersFeePercentage(): number {
     return this.auctionService.getAuctioneersFee(
-      this.auctionValues?.auctionPropertyValue,
+      this.auctionValues?.auctionPurchaseValue,
       this.auctionValues?.auctioneersFeePercentage
     );
   }
 
-  getNotaryFees(): number {
+  private getNotaryFees(): number {
     return this.auctionService.getNotaryFees(
-      this.auctionValues?.auctionPropertyValue
+      this.auctionValues?.auctionPurchaseValue
     );
   }
 
-  getTotalValue(): number {
+  protected getTotalValue(): number {
     return this.auctionService.getTotalInvested(
-      this.auctionValues?.auctionPropertyValue,
+      this.auctionValues?.auctionPurchaseValue,
       this.auctionValues?.auctioneersFeePercentage
     );
+  }
+
+  protected getPotentialGrossProfit(): number {
+    return this.auctionService.getPotentialGrossProfit(
+      this.auctionValues?.appraisalValue,
+      this.auctionValues?.auctionPurchaseValue,
+      this.auctionValues?.auctioneersFeePercentage
+    );
+  }
+
+  protected getIncomeTax(): number {
+    return this.auctionService.getIncomeTax(
+      this.auctionValues?.appraisalValue,
+      this.auctionValues?.auctionPurchaseValue,
+      this.auctionValues?.auctioneersFeePercentage
+    );
+  }
+
+  protected getPotentialNetProfit(): number {
+    return this.getPotentialGrossProfit() - this.getIncomeTax();
   }
 }

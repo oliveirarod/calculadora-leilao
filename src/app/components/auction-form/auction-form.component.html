@@ -1,18 +1,14 @@
 <form [formGroup]="auctionForm">
-	<app-auction-input 
-		formControlName="auctionPropertyValue"
-		[label]="'Valor do leilão'"
-		[placeholder]="'Informe o valor do imóvel'">
-	</app-auction-input>
-
-	<app-auction-input 
-		formControlName="auctioneersFeePercentage"
-		[label]="'Taxa do leiloeiro (%)'"
-		[placeholder]="'Informe a porcentagem da taxa do leiloeiro'">
-	</app-auction-input>
+	@for (controlName of getFormControlNames(); track $index) {
+		<app-auction-input 
+      [formControlName]="controlName"
+      [label]="inputConfigs[controlName].label"
+      [placeholder]="inputConfigs[controlName].placeholder">
+    </app-auction-input>
+	}
 </form>
 
-<section class="my-4">
+<section class="my-5">
 	<app-result-display 
 		[auctionValues]="auctionFormValues">
 	</app-result-display>

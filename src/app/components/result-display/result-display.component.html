@@ -1,6 +1,26 @@
-<h4>Total: {{ getTotalValue() | currency: 'BRL' }}	</h4>
+<section class="mb-4">
+  <h4>Custo total: {{ getTotalValue() | currency : "BRL" }}</h4>
+
+  @if (getTotalValue() > 0) {
+    <div class="d-flex flex-column">
+      <span>
+        Valor de avaliação:
+        {{ auctionValues.appraisalValue | currency : "BRL" }}
+      </span>
+
+      <span>
+        Ganho esperado:
+        <span class="text-profit">
+          {{ getPotentialNetProfit() | currency : "BRL" }}
+        </span>
+      </span>
+    </div>
+  }
+</section>
 
 @if (getTotalValue() > 0) {
+  <h5>Detalhes dos valores</h5>
+
   <table class="table">
     <thead>
       <tr>
@@ -10,12 +30,14 @@
     </thead>
 
     <tbody>
-			@for (detail of auctionDetails; track $index) {
-				<tr>
-					<td>{{ detail.description }}</td>
-					<td>{{ detail.value | currency: 'BRL' }}</td>
-				</tr>
-			}
+      @for (detail of auctionDetails; track $index) {
+      <tr>
+        <td>{{ detail.description }}</td>
+        <td [ngClass]="detail.isProfit ? 'text-profit' : 'text-expense'">
+          {{ detail.value | currency : "BRL" }}
+        </td>
+      </tr>
+      }
     </tbody>
   </table>
 }
