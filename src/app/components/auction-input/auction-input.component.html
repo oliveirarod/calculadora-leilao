@@ -1,11 +1,22 @@
 <div class="mb-3">
-  <label class="form-label">{{ label }}</label>
-  <input
-		class="form-control"
-    type="number"
-    [placeholder]="placeholder"
-    [attr.aria-label]="label"
-    [value]="value"
-    (input)="handleInputChange($event)"
-  />
+  @if (inputType === 'number') {
+    <label class="form-label">{{ label }}</label>
+    <input
+      class="form-control"
+      type="number"
+      [placeholder]="placeholder"
+      [attr.aria-label]="label"
+      [value]="value"
+      (input)="handleInputChange($event)"
+    />
+  }
+
+  @if (inputType === 'radio' && radioOptions) {
+    <app-auction-radio-button
+      [label]="label"
+      [radioOptions]="radioOptions"
+      [initialValue]="value"
+      (valueChange)="handleInputChange($event)">
+    </app-auction-radio-button>
+  }
 </div>

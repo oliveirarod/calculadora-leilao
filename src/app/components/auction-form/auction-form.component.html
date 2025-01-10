@@ -3,7 +3,9 @@
 		<app-auction-input 
       [formControlName]="controlName"
       [label]="inputConfigs[controlName].label"
-      [placeholder]="inputConfigs[controlName].placeholder">
+      [placeholder]="inputConfigs[controlName].placeholder || ''"
+			[inputType]="inputConfigs[controlName].inputType"
+			[radioOptions]="inputConfigs[controlName].radioOptions">
     </app-auction-input>
 	}
 </form>

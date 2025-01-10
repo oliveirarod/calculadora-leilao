@@ -1,10 +1,13 @@
 import { Component, forwardRef, Input } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
+import { AuctionRadioButtonComponent } from '@components/auction-radio-button/auction-radio-button.component';
+import { RadioOption } from '@shared/interfaces/radio-option.interface';
+
 @Component({
   selector: 'app-auction-input',
   standalone: true,
-  imports: [],
+  imports: [AuctionRadioButtonComponent],
   templateUrl: './auction-input.component.html',
   styleUrl: './auction-input.component.scss',
   providers: [
@@ -18,32 +21,35 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 export class AuctionInputComponent implements ControlValueAccessor {
   @Input() label: string = '';
   @Input() placeholder: string = '';
+  @Input() inputType: string = '';
+  @Input() radioOptions?: RadioOption[] = [];
 
   value: any;
 
-  protected handleInputChange(event: Event): void {
-    const input = event.target as HTMLInputElement;
+  protected handleInputChange(event: Event | number): void {
+    const currentValue =
+      typeof event === 'number'
+        ? event
+        : (event.target as HTMLInputElement).value;
 
-    this.value = Number(input.value);
+    this.value = Number(currentValue);
 
     this.onChange(this.value);
     this.onTouched();
   }
 
-  // ControlValueAccessor methods
-  onChange = (value: number) => {};
-  onTouched = () => {};
+	onChange = (value: number) => {};
+	onTouched = () => {};
 
-  writeValue(value: number): void {
-    console.log('value', value);
-    this.value = value;
-  }
+	writeValue(value: number): void {
+		this.value = value;
+	}
 
-  registerOnChange(fn: any): void {
-    this.onChange = fn;
-  }
+	registerOnChange(fn: any): void {
+		this.onChange = fn;
+	}
 
-  registerOnTouched(fn: any): void {
-    this.onTouched = fn;
-  }
+	registerOnTouched(fn: any): void {
+		this.onTouched = fn;
+	}
 }

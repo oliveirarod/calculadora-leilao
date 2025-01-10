@@ -20,15 +20,27 @@ export class AuctionFormComponent implements OnInit {
   protected inputConfigs: Record<string, InputConfig> = {
     appraisalValue: {
       label: 'Valor da avaliação',
-      placeholder: 'Informe o valor da avaliação'
+      placeholder: 'Informe o valor da avaliação',
+      inputType: 'number'
     },
     auctionPurchaseValue: {
       label: 'Valor de compra do imóvel',
-      placeholder: 'Informe o valor que deseja comprar o imóvel'
+      placeholder: 'Informe o valor que deseja comprar o imóvel',
+      inputType: 'number'
     },
     auctioneersFeePercentage: {
-      label: 'Taxa do leiloeiro (%)',
-      placeholder: 'Informe a porcentagem da taxa do leiloeiro'
+      label: 'Modalidade do leilão (Taxa do leiloeiro)',
+      inputType: 'radio',
+      radioOptions: [
+        {
+          label: 'Leilão tradicional (5%)',
+          value: 5
+        },
+        {
+          label: 'Venda direta (0%)',
+          value: 0
+        }
+      ]
     }
   };
 
@@ -54,5 +66,9 @@ export class AuctionFormComponent implements OnInit {
 
   protected getFormControlNames(): string[] {
     return Object.keys(this.auctionForm.controls);
+  }
+
+  teste() {
+    console.log("this.auctionForm.getRawValue()", this.auctionForm.getRawValue());
   }
 }
