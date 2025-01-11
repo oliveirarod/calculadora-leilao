@@ -57,18 +57,15 @@ export class AuctionFormComponent implements OnInit {
   }
 
   protected createForm(): void {
+    // TODO: Adicionar possível custo de 
     this.auctionForm = this.form.group({
-      appraisalValue: [0, Validators.required],
-      auctionPurchaseValue: [0, Validators.required],
+      appraisalValue: [null, Validators.required],
+      auctionPurchaseValue: [null, Validators.required],
       auctioneersFeePercentage: [5, Validators.required],
     });
   }
 
   protected getFormControlNames(): string[] {
     return Object.keys(this.auctionForm.controls);
-  }
-
-  teste() {
-    console.log("this.auctionForm.getRawValue()", this.auctionForm.getRawValue());
   }
 }

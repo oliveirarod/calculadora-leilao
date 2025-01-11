@@ -12,7 +12,7 @@ import { RadioOption } from '@shared/interfaces/radio-option.interface';
 export class AuctionRadioButtonComponent {
   @Input() label: string = '';
   @Input() radioOptions: RadioOption[] = [];
-  @Input() initialValue!: number;
+  @Input() initialValue!: number | null;
 
   @Output() valueChange = new EventEmitter<number>();
 

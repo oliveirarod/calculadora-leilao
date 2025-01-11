@@ -2,7 +2,6 @@ import { ApplicationConfig, LOCALE_ID, provideZoneChangeDetection } from '@angul
 import { provideRouter } from '@angular/router';
 import { registerLocaleData } from '@angular/common';
 import { provideClientHydration } from '@angular/platform-browser';
-import { provideEnvironmentNgxMask } from 'ngx-mask';
 import localePt from '@angular/common/locales/pt';
 
 import { routes } from './app.routes';
@@ -14,7 +13,6 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideClientHydration(),
-    provideEnvironmentNgxMask(),
     {provide: LOCALE_ID, useValue: 'pt-BR' }
   ],
 };
