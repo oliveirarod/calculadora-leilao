@@ -34,11 +34,29 @@ export class AuctionFormComponent implements OnInit {
       radioOptions: [
         {
           label: 'Leilão tradicional (5%)',
+          inputName: 'auctioneersFeePercentage-5',
           value: 5
         },
         {
           label: 'Venda direta (0%)',
+          inputName: 'auctioneersFeePercentage-0',
           value: 0
+        }
+      ]
+    },
+    realEstateAgencySale: {
+      label: 'Venda com agência imobiliária?',
+      inputType: 'radio',
+      radioOptions: [
+        {
+          label: 'Sim',
+          inputName: 'realEstateAgencySale-true',
+          value: true
+        },
+        {
+          label: 'Nao',
+          inputName: 'realEstateAgencySale-false',
+          value: false
         }
       ]
     }
@@ -57,11 +75,11 @@ export class AuctionFormComponent implements OnInit {
   }
 
   protected createForm(): void {
-    // TODO: Adicionar possível custo de 
     this.auctionForm = this.form.group({
       appraisalValue: [null, Validators.required],
       auctionPurchaseValue: [null, Validators.required],
       auctioneersFeePercentage: [5, Validators.required],
+      realEstateAgencySale: [false, Validators.required],
     });
   }
 

@@ -29,12 +29,16 @@ export class ResultDisplayComponent implements OnChanges {
         value: this.getAuctioneersFeePercentage(),
       },
       { description: 'Taxas de cartório', value: this.getNotaryFees() },
-      { description: 'Imposto de Renda', value: this.getIncomeTax() },
       {
         description: 'Ganho potencial (bruto)',
         value: this.getPotentialGrossProfit(),
         isProfit: true,
       },
+      {
+        description: 'Custo com imobiliária',
+        value: this.getRealEstateAgencySaleValue(),
+      },
+      { description: 'Imposto de Renda', value: this.getIncomeTax() },
       {
         description: 'Ganho potencial (liquido)',
         value: this.getPotentialNetProfit(),
@@ -81,7 +85,30 @@ export class ResultDisplayComponent implements OnChanges {
     );
   }
 
+  protected getRealEstateAgencySaleValue(): number {
+    if (!this.auctionValues?.realEstateAgencySale) 
+      return 0;
+
+    return this.auctionService.getRealEstateAgencySaleValue(
+      this.auctionValues?.appraisalValue,
+      this.auctionValues?.auctionPurchaseValue,
+      this.auctionValues?.auctioneersFeePercentage
+    );
+  }
+
+  protected getProfitWithRealEstateAgency(): number {
+    return this.auctionService.getProfitWithRealEstateAgency(
+      this.auctionValues?.appraisalValue,
+      this.auctionValues?.auctionPurchaseValue,
+      this.auctionValues?.auctioneersFeePercentage
+    );
+  }
+
   protected getPotentialNetProfit(): number {
-    return this.getPotentialGrossProfit() - this.getIncomeTax();
+    const saleValue = this.auctionValues?.realEstateAgencySale
+      ? this.getProfitWithRealEstateAgency()
+      : this.getPotentialGrossProfit();
+
+    return saleValue - this.getIncomeTax();
   }
 }

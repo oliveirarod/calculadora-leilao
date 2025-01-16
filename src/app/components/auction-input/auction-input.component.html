@@ -10,7 +10,7 @@
       (input)="handleInputChange($event)"
     />
 
-    <p class="form-text text-muted">
+    <p class="form-text text-muted mt-1 ms-1">
       {{ value | currency: "BRL" }}
     </p>
   }
@@ -19,7 +19,7 @@
     <app-auction-radio-button
       [label]="label"
       [radioOptions]="radioOptions"
-      [initialValue]="value"
+      [value]="value"
       (valueChange)="handleInputChange($event)">
     </app-auction-radio-button>
   }

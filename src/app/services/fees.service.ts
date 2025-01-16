@@ -19,4 +19,8 @@ export class FeesService {
 
     return totalNotaryFees;
   }
+
+  getRealEstateAgencyFeeValue(auctioSaleValue: number): number {
+    return auctioSaleValue * 0.06;
+  }
 }

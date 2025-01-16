@@ -2,18 +2,18 @@
   <label class="form-label mb-2">{{ label }}</label>
 
   <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-    @for (option of radioOptions; track $index) {
+    @for (option of radioOptions; track option.inputName) {
       <input
-        id="btn-radio-{{ $index }}"
+        [id]="'btn-radio-' + option.inputName"
         type="radio"
         class="btn-check"
-        name="btnradio"
+        [name]="option.inputName"
         autocomplete="off"
-        [checked]="initialValue === option.value"
+        [checked]="value === option.value"
         (click)="handleRadioChange(option.value)"
       />
 
-      <label class="btn btn-outline-primary" for="btn-radio-{{ $index }}">
+      <label class="btn btn-outline-primary" [for]="'btn-radio-' + option.inputName">
         {{ option.label }}
       </label>
     }

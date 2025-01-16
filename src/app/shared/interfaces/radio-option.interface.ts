@@ -1,4 +1,5 @@
 export interface RadioOption {
 	label: string;
-	value: number;
+	inputName: string;
+	value: number | boolean;
 }

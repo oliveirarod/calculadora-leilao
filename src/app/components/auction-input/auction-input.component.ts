@@ -24,18 +24,16 @@ export class AuctionInputComponent implements ControlValueAccessor {
   @Input() inputType: string = '';
   @Input() radioOptions?: RadioOption[] = [];
 
-  value: number  | null = null;
+  value: any = null;
 
-  protected handleInputChange(event: Event | number): void {
-    const currentValue =
-      typeof event === 'number'
-        ? event
-        : (event.target as HTMLInputElement).value;
+  protected handleInputChange(newValue: any): void {
+    const currentValue = newValue instanceof Event
+        ? (newValue.target as HTMLInputElement).value
+        : newValue;
 
-    console.log('currentValue', currentValue);
-    console.log('tipo', typeof currentValue);
-
-    this.value = Number(currentValue);
+    this.value = this.inputType === 'number' 
+      ? Number(currentValue) 
+      : currentValue;
 
     this.onChange(this.value);
     this.onTouched();

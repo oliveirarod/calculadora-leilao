@@ -4,4 +4,5 @@ export interface AuctionValues {
   auctioneersFeePercentage: number;
   totalInvested: number;
   potentialProfit: number;
+  realEstateAgencySale: boolean;
 }

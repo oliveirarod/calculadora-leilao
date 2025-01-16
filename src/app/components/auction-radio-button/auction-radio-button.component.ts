@@ -1,4 +1,4 @@
-import { Component, EventEmitter, forwardRef, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { RadioOption } from '@shared/interfaces/radio-option.interface';
 
@@ -12,11 +12,11 @@ import { RadioOption } from '@shared/interfaces/radio-option.interface';
 export class AuctionRadioButtonComponent {
   @Input() label: string = '';
   @Input() radioOptions: RadioOption[] = [];
-  @Input() initialValue!: number | null;
+  @Input() value!: number | boolean | null;
 
-  @Output() valueChange = new EventEmitter<number>();
+  @Output() valueChange = new EventEmitter<number | boolean>();
 
-  protected handleRadioChange(value: number): void {
+  protected handleRadioChange(value: number | boolean): void {
     this.valueChange.emit(value);
   }
 }
