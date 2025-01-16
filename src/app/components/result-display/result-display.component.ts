@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
-import { AuctionFormService } from '@services/auction-form.service';
+import { AuctionFormService } from '@services/auction-form/auction-form.service';
 
-import { FinancialCalculationService } from '@services/financial-calculation.service';
+import { FinancialCalculationService } from '@services/financial-calculation/financial-calculation.service';
 import { AuctionResultDetail } from '@shared/interfaces/auction-detail.interface';
 import { AuctionValues } from '@shared/interfaces/auction-values.interface';
 
@@ -14,7 +14,14 @@ import { AuctionValues } from '@shared/interfaces/auction-values.interface';
   styleUrl: './result-display.component.scss',
 })
 export class ResultDisplayComponent implements OnInit {
-  auctionValues!: AuctionValues;
+  auctionValues: AuctionValues = {
+    auctionPurchaseValue: 0,
+    auctioneersFeePercentage: 0,
+    appraisalValue: 0,
+    realEstateAgencySale: false,
+    potentialProfit: 0,
+    totalInvested: 0,
+  };
   AuctionResultDetails: AuctionResultDetail[] = [];
 
   constructor(

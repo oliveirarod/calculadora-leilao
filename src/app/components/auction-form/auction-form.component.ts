@@ -7,7 +7,7 @@ import {
 } from '@angular/forms';
 
 import { AuctionInputComponent } from '@components/auction-input/auction-input.component';
-import { AuctionFormService } from '@services/auction-form.service';
+import { AuctionFormService } from '@services/auction-form/auction-form.service';
 import { inputConfigs } from '@shared/constants/auction-form-input-configs.constant';
 import { InputConfig } from '@shared/interfaces/input-config.interface';
 
