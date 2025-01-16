@@ -1,0 +1,17 @@
+<form [formGroup]="auctionForm">
+	@for (controlName of getFormControlNames(); track $index) {
+		<app-auction-input 
+      [formControlName]="controlName"
+      [label]="inputConfigs[controlName].label"
+      [placeholder]="inputConfigs[controlName].placeholder || ''"
+			[inputType]="inputConfigs[controlName].inputType"
+			[radioOptions]="inputConfigs[controlName].radioOptions">
+    </app-auction-input>
+	}
+</form>
+
+<section class="my-5">
+	<app-result-display 
+		[auctionValues]="auctionFormValues">
+	</app-result-display>
+</section>

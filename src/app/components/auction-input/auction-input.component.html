@@ -1,0 +1,26 @@
+<div class="mb-3">
+  @if (inputType === 'number') {
+    <label class="form-label">{{ label }}</label>
+    <input
+      class="form-control"
+      type="number"
+      [placeholder]="placeholder"
+      [attr.aria-label]="label"
+      [(ngModel)]="value"
+      (input)="handleInputChange($event)"
+    />
+
+    <p class="form-text text-muted mt-1 ms-1">
+      {{ value | currency: "BRL" }}
+    </p>
+  }
+
+  @if (inputType === 'radio' && radioOptions) {
+    <app-auction-radio-button
+      [label]="label"
+      [radioOptions]="radioOptions"
+      [value]="value"
+      (valueChange)="handleInputChange($event)">
+    </app-auction-radio-button>
+  }
+</div>
