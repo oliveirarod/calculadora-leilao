@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { AuctionFormService } from '@services/auction-form.service';
 
-import { AuctionService } from '@services/auction.service';
-import { AuctionDetail } from '@shared/interfaces/auction-detail.interface';
+import { FinancialCalculationService } from '@services/financial-calculation.service';
+import { AuctionResultDetail } from '@shared/interfaces/auction-detail.interface';
 import { AuctionValues } from '@shared/interfaces/auction-values.interface';
 
 @Component({
@@ -12,103 +13,115 @@ import { AuctionValues } from '@shared/interfaces/auction-values.interface';
   templateUrl: './result-display.component.html',
   styleUrl: './result-display.component.scss',
 })
-export class ResultDisplayComponent implements OnChanges {
-  @Input() auctionValues!: AuctionValues;
-  auctionDetails: AuctionDetail[] = [];
+export class ResultDisplayComponent implements OnInit {
+  auctionValues!: AuctionValues;
+  AuctionResultDetails: AuctionResultDetail[] = [];
 
-  constructor(private auctionService: AuctionService) {}
+  constructor(
+    private financialCalculationService: FinancialCalculationService,
+    private auctionFormService: AuctionFormService
+  ) {}
 
-  ngOnChanges(): void {
-    this.updateFeeDetails();
+  ngOnInit(): void {
+    this.auctionFormService.form$.subscribe((form: Record<string, any>) => {
+      this.auctionValues = {
+        ...this.auctionValues,
+        ...form,
+      };
+
+      this.updateResultDetails();
+    });
   }
 
-  private updateFeeDetails(): void {
-    const details: AuctionDetail[] = [
-      {
-        description: 'Taxa do leiloeiro',
-        value: this.getAuctioneersFeePercentage(),
-      },
-      { description: 'Taxas de cartório', value: this.getNotaryFees() },
-      {
-        description: 'Ganho potencial (bruto)',
-        value: this.getPotentialGrossProfit(),
-        isProfit: true,
-      },
-      {
-        description: 'Custo com imobiliária',
-        value: this.getRealEstateAgencySaleValue(),
-      },
-      { description: 'Imposto de Renda', value: this.getIncomeTax() },
-      {
-        description: 'Ganho potencial (liquido)',
-        value: this.getPotentialNetProfit(),
-        isProfit: true,
-      },
+  private updateResultDetails(): void {
+    const details: AuctionResultDetail[] = [
+      this.createDetail('Taxa do leiloeiro', this.getAuctioneersFeePercentage()),
+      this.createDetail('Taxas de cartório', this.getNotaryFees()),
+      this.createDetail('Ganho potencial (bruto)', this.getPotentialGrossProfit(), true),
+      this.createDetail('Custo com imobiliária', this.getRealEstateAgencySaleValue()),
+      this.createDetail('Imposto de Renda', this.getIncomeTax()),
+      this.createDetail('Ganho potencial (líquido)', this.getPotentialNetProfit(), true),
     ];
 
-    this.auctionDetails = details.filter((detail) => detail.value > 0);
+    this.AuctionResultDetails = details.filter((detail) => detail.value > 0);
+  }
+
+  private createDetail(description: string, value: number, isProfit = false): AuctionResultDetail {
+    return { description, value, isProfit };
   }
 
   private getAuctioneersFeePercentage(): number {
-    return this.auctionService.getAuctioneersFee(
-      this.auctionValues?.auctionPurchaseValue,
-      this.auctionValues?.auctioneersFeePercentage
+    const { auctionPurchaseValue, auctioneersFeePercentage } = this.auctionValues;
+
+    return this.financialCalculationService.calculateAuctioneerFees(
+      auctionPurchaseValue,
+      auctioneersFeePercentage
     );
   }
 
   private getNotaryFees(): number {
-    return this.auctionService.getNotaryFees(
+    return this.financialCalculationService.calculateNotaryFees(
       this.auctionValues?.auctionPurchaseValue
     );
   }
 
   protected getTotalValue(): number {
-    return this.auctionService.getTotalInvested(
-      this.auctionValues?.auctionPurchaseValue,
-      this.auctionValues?.auctioneersFeePercentage
+    const { auctionPurchaseValue, auctioneersFeePercentage } = this.auctionValues;
+
+    return this.financialCalculationService.calculateTotalInvestment(
+      auctionPurchaseValue,
+      auctioneersFeePercentage
     );
   }
 
   protected getPotentialGrossProfit(): number {
-    return this.auctionService.getPotentialGrossProfit(
-      this.auctionValues?.appraisalValue,
-      this.auctionValues?.auctionPurchaseValue,
-      this.auctionValues?.auctioneersFeePercentage
+    const { appraisalValue, auctionPurchaseValue, auctioneersFeePercentage } = this.auctionValues;
+
+    return this.financialCalculationService.calculatePotentialGrossProfit(
+      appraisalValue,
+      auctionPurchaseValue,
+      auctioneersFeePercentage
     );
   }
 
   protected getIncomeTax(): number {
-    return this.auctionService.getIncomeTax(
-      this.auctionValues?.appraisalValue,
-      this.auctionValues?.auctionPurchaseValue,
-      this.auctionValues?.auctioneersFeePercentage
+    const { appraisalValue, auctionPurchaseValue, auctioneersFeePercentage } = this.auctionValues;
+
+    return this.financialCalculationService.calculateIncomeTax(
+      appraisalValue,
+      auctionPurchaseValue,
+      auctioneersFeePercentage
     );
   }
 
   protected getRealEstateAgencySaleValue(): number {
-    if (!this.auctionValues?.realEstateAgencySale) 
-      return 0;
+    const { realEstateAgencySale, appraisalValue, auctionPurchaseValue, auctioneersFeePercentage } =
+      this.auctionValues;
 
-    return this.auctionService.getRealEstateAgencySaleValue(
-      this.auctionValues?.appraisalValue,
-      this.auctionValues?.auctionPurchaseValue,
-      this.auctionValues?.auctioneersFeePercentage
+    if (!realEstateAgencySale) return 0;
+
+    return this.financialCalculationService.calculateRealEstateAgencyFee(
+      appraisalValue,
+      auctionPurchaseValue,
+      auctioneersFeePercentage
     );
   }
 
   protected getProfitWithRealEstateAgency(): number {
-    return this.auctionService.getProfitWithRealEstateAgency(
-      this.auctionValues?.appraisalValue,
-      this.auctionValues?.auctionPurchaseValue,
-      this.auctionValues?.auctioneersFeePercentage
+    const { appraisalValue, auctionPurchaseValue, auctioneersFeePercentage } = this.auctionValues;
+
+    return this.financialCalculationService.calculateNetProfitAfterAgencyFee(
+      appraisalValue,
+      auctionPurchaseValue,
+      auctioneersFeePercentage
     );
   }
 
   protected getPotentialNetProfit(): number {
-    const saleValue = this.auctionValues?.realEstateAgencySale
+    const grossProfit = this.auctionValues.realEstateAgencySale
       ? this.getProfitWithRealEstateAgency()
       : this.getPotentialGrossProfit();
 
-    return saleValue - this.getIncomeTax();
+    return grossProfit - this.getIncomeTax();
   }
 }

@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, forwardRef, Input } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { AuctionRadioButtonComponent } from '@components/auction-radio-button/auction-radio-button.component';
+import { InputConfig } from '@shared/interfaces/input-config.interface';
 import { RadioOption } from '@shared/interfaces/radio-option.interface';
 
 @Component({
@@ -19,26 +20,44 @@ import { RadioOption } from '@shared/interfaces/radio-option.interface';
   ],
 })
 export class AuctionInputComponent implements ControlValueAccessor {
-  @Input() label: string = '';
-  @Input() placeholder: string = '';
-  @Input() inputType: string = '';
-  @Input() radioOptions?: RadioOption[] = [];
+  @Input() inputConfig!: Record<string, InputConfig>;
 
   value: any = null;
 
   protected handleInputChange(newValue: any): void {
-    const currentValue = newValue instanceof Event
+    const value = newValue instanceof Event
         ? (newValue.target as HTMLInputElement).value
         : newValue;
 
-    this.value = this.inputType === 'number' 
-      ? Number(currentValue) 
-      : currentValue;
+    this.value = this.getFormattedValue(value);
 
     this.onChange(this.value);
     this.onTouched();
   }
 
+  private getFormattedValue(rawValue: any): string {
+    return this.inputType === 'number' 
+      ? Number(rawValue)
+      : rawValue;
+  }
+
+  protected get inputType(): string {
+    return Object.values(this.inputConfig)[0].inputType;
+  }
+
+  protected get label(): string {
+    return Object.values(this.inputConfig)[0].label;
+  }
+
+  protected get placeholder(): string | undefined {
+    return Object.values(this.inputConfig)[0].placeholder;
+  }
+
+  protected get radioOptions(): RadioOption[] | undefined {
+    return Object.values(this.inputConfig)[0].radioOptions;
+  }
+
+  // ControlValueAccessor implementation
 	onChange = (value: number) => {};
 	onTouched = () => {};
 

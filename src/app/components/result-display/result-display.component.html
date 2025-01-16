@@ -1,7 +1,9 @@
-<section class="mb-4">
-  <h4>Custo total: {{ getTotalValue() | currency : "BRL" }}</h4>
+@if (getTotalValue() > 0) {
+  <section class="mb-4">
+    <hr class="my-4">
 
-  @if (getTotalValue() > 0) {
+    <h4>Custo total: {{ getTotalValue() | currency : "BRL" }}</h4>
+
     <div class="d-flex flex-column">
       <span>
         Valor de avaliação:
@@ -15,8 +17,8 @@
         </span>
       </span>
     </div>
-  }
-</section>
+  </section>
+}
 
 @if (getTotalValue() > 0) {
   <h5>Detalhes dos valores</h5>
@@ -30,7 +32,7 @@
     </thead>
 
     <tbody>
-      @for (detail of auctionDetails; track $index) {
+      @for (detail of AuctionResultDetails; track $index) {
       <tr>
         <td>{{ detail.description }}</td>
         <td [ngClass]="detail.isProfit ? 'text-profit' : 'text-expense'">
