@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 
 import { AuctionFormComponent } from '@components/auction-form/auction-form.component';
-import { ResultDisplayComponent } from '@components/result-display/result-display.component';
+import { ResultsSectionComponent } from '@components/results-section/results-section.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [AuctionFormComponent, ResultDisplayComponent],
+  imports: [AuctionFormComponent, ResultsSectionComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })

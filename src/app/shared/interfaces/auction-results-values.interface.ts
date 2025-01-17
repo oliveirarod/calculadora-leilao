@@ -1,4 +1,4 @@
-export interface AuctionValues {
+export interface AuctionResultsValue {
   appraisalValue: number;
   auctionPurchaseValue: number;
   auctioneersFeePercentage: number;
