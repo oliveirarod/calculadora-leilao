@@ -1,0 +1,20 @@
+<table class="table">
+	<thead>
+		<tr>
+			<th>Descrição</th>
+			<th>Valor</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		@for (detail of auctionResultDetails; track $index) {
+		<tr>
+			<td>{{ detail.description }}</td>
+
+			<td [ngClass]="detail.isProfit ? 'text-profit' : 'text-expense'">
+				{{ detail.value | currency : "BRL" }}
+			</td>
+		</tr>
+		}
+	</tbody>
+</table>

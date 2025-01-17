@@ -1,0 +1,17 @@
+<section ngbAccordion [closeOthers]="true">
+	@for (section of accordionSections; track $index) {
+		<section ngbAccordionItem [collapsed]="$index !== 0">
+			<h2 ngbAccordionHeader>
+				<button ngbAccordionButton>
+					{{ section.title }}
+				</button>
+			</h2>
+
+			<div ngbAccordionCollapse>
+				<div ngbAccordionBody>
+					<ng-container *ngComponentOutlet="section.component"></ng-container>
+				</div>
+			</div>
+		</section>
+	}
+</section>

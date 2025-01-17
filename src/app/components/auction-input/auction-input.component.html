@@ -1,21 +1,22 @@
 <div class="mb-3">
-  @if (inputType === 'number') {
+  @if (inputType === currencyInputType) {
     <label class="form-label">{{ label }}</label>
     <input
       class="form-control"
-      type="tel"
+      type="text"
+      [allowNegativeNumbers]="true" 
+      mask="separator.2"
+      thousandSeparator="."
+      decimalSeparator=","
+      prefix="R$ "
       [placeholder]="placeholder"
       [attr.aria-label]="label"
       [(ngModel)]="value"
       (input)="handleInputChange($event)"
     />
-
-    <p class="form-text text-muted mt-1 ms-1">
-      {{ value | currency: "BRL" }}
-    </p>
   }
 
-  @if (inputType === 'radio' && radioOptions) {
+  @if (inputType === radioInputType && radioOptions) {
     <app-auction-radio-button
       [label]="label"
       [radioOptions]="radioOptions"

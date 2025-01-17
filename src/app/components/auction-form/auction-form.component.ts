@@ -33,6 +33,7 @@ export class AuctionFormComponent implements OnInit {
     this.auctionFormService.updateForm(this.auctionForm);
 
     this.auctionForm.valueChanges.subscribe((values) => {
+      console.log("auctionForm", values);
       this.auctionFormService.updateForm(values);
     })
   }

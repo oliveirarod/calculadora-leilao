@@ -1,0 +1,23 @@
+@if (getTotalValue() > 0) {
+  <section class="mb-3">
+    <hr class="my-4">
+
+    <h4>Custo total: {{ getTotalValue() | currency : "BRL" }}</h4>
+
+    <div class="d-flex flex-column">
+      <span>
+        Valor de avaliação:
+        {{ auctionResultsValue.appraisalValue | currency : "BRL" }}
+      </span>
+
+      <span>
+        Ganho esperado:
+        <span class="text-profit">
+          {{ getPotentialNetProfit() | currency : "BRL" }}
+        </span>
+      </span>
+    </div>
+  </section>
+
+  <app-accordion></app-accordion>
+}
