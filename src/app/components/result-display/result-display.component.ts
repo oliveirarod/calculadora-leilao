@@ -42,11 +42,11 @@ export class ResultDisplayComponent implements OnInit {
 
   private updateResultDetails(): void {
     const details: AuctionResultDetail[] = [
-      this.createDetail('Taxa do leiloeiro', this.getAuctioneersFeePercentage()),
-      this.createDetail('Taxas de cartório', this.getNotaryFees()),
+      this.createDetail('Taxa do leiloeiro (5%)', this.getAuctioneersFeePercentage()),
+      this.createDetail('Taxas de cartório (6,5%)', this.getNotaryFees()),
       this.createDetail('Ganho potencial (bruto)', this.getPotentialGrossProfit(), true),
-      this.createDetail('Custo com imobiliária', this.getRealEstateAgencySaleValue()),
-      this.createDetail('Imposto de Renda', this.getIncomeTax()),
+      this.createDetail('Custo com imobiliária (6%)', this.getRealEstateAgencySaleValue()),
+      this.createDetail('Imposto de Renda (15%)', this.getIncomeTax()),
       this.createDetail('Ganho potencial (líquido)', this.getPotentialNetProfit(), true),
     ];
 
