@@ -3,7 +3,6 @@ import { Component } from '@angular/core';
 import { AuctionFormService } from '@services/auction-form/auction-form.service';
 import { AuctionResultsService } from '@services/auction-results/auction-results.service';
 import { AuctionResultDetail } from '@shared/interfaces/auction-detail.interface';
-import { AuctionResultsValue } from '@shared/interfaces/auction-results-values.interface';
 
 @Component({
   selector: 'app-cost-results-table',

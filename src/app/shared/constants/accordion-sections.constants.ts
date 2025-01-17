@@ -1,5 +1,6 @@
 import { AccordionSection } from "@shared/interfaces/accordion-item.interface";
-import { CostResultsTableComponent } from '@components/cost-results-table/cost-results-table.component';
+import { CostResultsTableComponent } from '@components/results-section/cost-results-table/cost-results-table.component';
+import { AuctionFormComponent } from "@components/auction-form/auction-form.component";
 
 /**
  * `accordionSections` é uma constante que define as seções do acordeão para a interface do usuário.
