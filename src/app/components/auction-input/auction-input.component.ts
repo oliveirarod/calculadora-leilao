@@ -1,14 +1,20 @@
-import { CommonModule } from '@angular/common';
 import { Component, forwardRef, Input } from '@angular/core';
-import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
+import {
+  ControlValueAccessor,
+  FormsModule,
+  NG_VALUE_ACCESSOR,
+} from '@angular/forms';
+import { NgxMaskDirective } from 'ngx-mask';
+
 import { AuctionRadioButtonComponent } from '@components/auction-radio-button/auction-radio-button.component';
+import { InputTypesEnum } from '@shared/enums/input-types.enum';
 import { InputConfig } from '@shared/interfaces/input-config.interface';
 import { RadioOption } from '@shared/interfaces/radio-option.interface';
 
 @Component({
   selector: 'app-auction-input',
   standalone: true,
-  imports: [FormsModule, CommonModule, AuctionRadioButtonComponent],
+  imports: [FormsModule, NgxMaskDirective, AuctionRadioButtonComponent],
   templateUrl: './auction-input.component.html',
   styleUrl: './auction-input.component.scss',
   providers: [
@@ -22,10 +28,13 @@ import { RadioOption } from '@shared/interfaces/radio-option.interface';
 export class AuctionInputComponent implements ControlValueAccessor {
   @Input() inputConfig!: Record<string, InputConfig>;
 
+  currencyInputType = InputTypesEnum.CURRENCY;
+  radioInputType = InputTypesEnum.RADIO;
   value: any = null;
 
   protected handleInputChange(newValue: any): void {
-    const value = newValue instanceof Event
+    const value =
+      newValue instanceof Event
         ? (newValue.target as HTMLInputElement).value
         : newValue;
 
@@ -35,10 +44,15 @@ export class AuctionInputComponent implements ControlValueAccessor {
     this.onTouched();
   }
 
-  private getFormattedValue(rawValue: any): string {
-    return this.inputType === 'number' 
-      ? Number(rawValue)
-      : rawValue;
+  private getFormattedValue(
+    value: boolean | number | string
+  ): boolean | number | string {
+    if (typeof value === 'boolean' || typeof value === 'number') {
+      return value;
+    }
+
+    const rawValue = value.replace(/[^\d,]/g, '').replace(',', '.');
+    return rawValue.length > 0 ? Number(rawValue) : 0;
   }
 
   protected get inputType(): string {
@@ -58,18 +72,18 @@ export class AuctionInputComponent implements ControlValueAccessor {
   }
 
   // ControlValueAccessor implementation
-	onChange = (value: number) => {};
-	onTouched = () => {};
+  onChange = (value: number) => {};
+  onTouched = () => {};
 
-	writeValue(value: number): void {
-		this.value = value;
-	}
+  writeValue(value: number): void {
+    this.value = value;
+  }
 
-	registerOnChange(fn: any): void {
-		this.onChange = fn;
-	}
+  registerOnChange(fn: any): void {
+    this.onChange = fn;
+  }
 
-	registerOnTouched(fn: any): void {
-		this.onTouched = fn;
-	}
+  registerOnTouched(fn: any): void {
+    this.onTouched = fn;
+  }
 }

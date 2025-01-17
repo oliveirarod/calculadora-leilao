@@ -1,3 +1,4 @@
+import { InputTypesEnum } from '@shared/enums/input-types.enum';
 import { InputConfig } from '@shared/interfaces/input-config.interface';
 
 export const inputConfigs: Record<string, InputConfig>[] = [
@@ -5,20 +6,20 @@ export const inputConfigs: Record<string, InputConfig>[] = [
     appraisalValue: {
       label: 'Valor da avaliação',
       placeholder: 'Informe o valor da avaliação',
-      inputType: 'number',
+      inputType: InputTypesEnum.CURRENCY,
     },
   },
   {
     auctionPurchaseValue: {
       label: 'Valor de compra do imóvel',
       placeholder: 'Informe o valor que deseja comprar o imóvel',
-      inputType: 'number',
+      inputType: InputTypesEnum.CURRENCY,
     },
   },
   {
     auctioneersFeePercentage: {
       label: 'Modalidade do leilão (Taxa do leiloeiro)',
-      inputType: 'radio',
+      inputType: InputTypesEnum.RADIO,
       radioOptions: [
         {
           label: 'Leilão tradicional (5%)',
@@ -36,7 +37,7 @@ export const inputConfigs: Record<string, InputConfig>[] = [
   {
     realEstateAgencySale: {
       label: 'Venda com agência imobiliária?',
-      inputType: 'radio',
+      inputType: InputTypesEnum.RADIO,
       radioOptions: [
         {
           label: 'Sim',
